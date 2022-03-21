@@ -6,8 +6,11 @@ import Navigation from './component/Navigation';
 
 function App() {
   return (
+
     <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <h1>COVID-19 Public Data Service</h1>
       <Navigation />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/map" element={<Map />} />
