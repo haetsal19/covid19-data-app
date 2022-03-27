@@ -289,22 +289,43 @@ const infStateDummy = [
 export default function Home() {
     const [data, setData] = useState({
         infState: {},
-        infClass: [],
-        vaccination: [],
+        vaccinated: 0,
         vaccinCenter: [],
     });
 
     const [isLoading, setIsLoading] = useState(true);
-    const urlInfState= 'http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson'
-   //보건복지부_코로나19감염현황 조회서비스 
-   //일별 확진자, 완치자, 치료중인환자, 사망자 등에 대한 현황자료 
-   //STATE_DT 기준일 STATE_TIME기준시간 DECIDE_CNT확진자수 DEATH_CNT사망자 수 
-   
+    const urlInfState = 'http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson'
+    //보건복지부_코로나19감염현황 조회서비스 
+    //일별 확진자, 완치자, 치료중인환자, 사망자 등에 대한 현황자료 
+    //STATE_DT 기준일 STATE_TIME기준시간 DECIDE_CNT확진자수 DEATH_CNT사망자 수 
+    const urlVaccinated = 'https://api.odcloud.kr/api/15077756/v1/vaccine-stat'
+    //공공데이터활용지원센터_코로나19 예방접종 통계 데이터 조회 서비스 
+
     const key = 'PUZHJkrBS3J8OgGKm77G4UbNrLjT1ZDwXAGy3CSHTrL/DHxM98WKk3qYeBxOIfEslb+mkyZDtlLws9IZ3EUVog==';
 
+    const getVaccinated = async () => {
+        let params = {
+            serviceKey: key,
+            page: 1,
+            perPage: 10,
+            'cond[baseDate::GTE]': moment().subtract(1, 'd').format("YYYY-MM-DD"),
+            'cond[sido::EQ]': '전국',
+        }
+        const vaccinated = await axios.get(`${urlVaccinated}?${new URLSearchParams(params).toString()}`)
+            .then((result) => {
+                console.log(result);
+                return result.data.data[result.data.data.length - 1].totalFirstCnt;
+            })
+            .catch(console.log);
+        console.log(vaccinated);
+        setData((prev) => {
+            let newData = { ...prev, vaccinated: vaccinated }
+            return newData
+        })
+    }
     const getInfState = async () => {
         let params = {
-            ServiceKey: key, 
+            ServiceKey: key,
             startCreateDt: moment().subtract(31, 'd').format("YYYYMMDD"), //검색할 생성일 범위의 시작
             endCreateDt: moment().subtract(1, 'd').format("YYYYMMDD"), //검색할 생성일 범위의 종료
         }
@@ -312,70 +333,79 @@ export default function Home() {
         const infStateList = await axios.get(`${urlInfState}?${new URLSearchParams(params).toString()}`)
             .then((result) => {
                 console.log(result.data.response.header.resultMsg);
-                if(result.data.response.header.resultCode == "00"){
+                if (result.data.response.header.resultCode == "00") {
                     return result.data.response.body.items.item.reverse();
-                }else{
+                } else {
                     return infStateDummy;
                 }
             })
             .catch(console.log);
-            
+
         console.log(infStateList);
         const newInfState = {
             labels: [],
             datas_inf: [],
             datas_death: [],
+            totalInf: 0,
+            totalDeath: 0,
         }
 
         infStateList.forEach((value, index) => {
             if (index === 0) return;
-            
+
             newInfState.labels.push(moment(value.createDt).format("MM/DD"));
             newInfState.datas_inf.push(infStateList[index].decideCnt - infStateList[index - 1].decideCnt);
             newInfState.datas_death.push(infStateList[index].deathCnt - infStateList[index - 1].deathCnt);
+            newInfState.totalInf = infStateList[index].decideCnt;
+            newInfState.totalDeath = infStateList[index].deathCnt;
         });
 
         setData((prev) => {
-            let newData = {...prev, infState: newInfState}
+            let newData = { ...prev, infState: newInfState }
             return newData
         })
 
         setIsLoading(false);
     }
-    
-    useEffect(()=> {
+
+    useEffect(() => {
         getInfState();
+        getVaccinated();
     }, [])
 
+    useEffect(() => {
+        console.log(data)
+    }, [data])
+
     if (isLoading) {
-       return (<div>Loading...</div>);
+        return (<div>Loading...</div>);
     } else {
         return (
-        <div>
-            <InfState list={data.infState} />
-        </div>
+            <div>
+                <div className='newTable'>
+                    <ul>
+                        <li>확진자</li>
+                        <li>사망자</li>
+                        <li>접종완료</li>
+                    </ul>
+                    <ul>
+                        <li>
+                            {data.infState.datas_inf[29]}<br />
+                            {data.infState.totalInf}
+                        </li>
+                        <li>
+                            {data.infState.datas_death[29]}<br />
+                            {data.infState.totalDeath}
+                        </li>
+                        <li>
+                            {data.vaccinated}/51628117
+                        </li>
+                    </ul>
+                </div>
+                <InfState list={data.infState} />
+            </div>
         )
     }
 }
 
 
-
-//     const infData = useMemo(() => {
-//       const result = {
-//         labels: [],
-//         datas: []
-//       }
-  
-//       list.reverse().forEach((value, index) => {
-//         if (index === 0) {
-//           return;
-//         }
-  
-
-//         result.labels.push(moment(value.createDt).format("MM/DD"));
-//         result.datas.push(list[index].decideCnt - list[index - 1].decideCnt);
-//       });
-  
-//       return result
-//     }, [list]);
-  

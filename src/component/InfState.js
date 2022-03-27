@@ -14,7 +14,7 @@ export default function InfState({ list }) {
         label: '일일 확진자수',
         yAxisID: "left-axis",
         borderColor: 'white',
-        borderWidth: 3,
+        borderWidth: 0,
         data: [],
         backgroundColor: '#1565c0',
         order: 2
@@ -24,7 +24,7 @@ export default function InfState({ list }) {
         label: '일일 사망자수',
         yAxisID: "right-axis",
         borderColor: '#c62828',
-        borderWidth: 3,
+        borderWidth: 2,
         data: [],
         backgroundColor: '#c62828',
         order: 1
