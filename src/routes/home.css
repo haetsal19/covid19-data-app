@@ -1,1 +1,24 @@
-newTable 
+.line1 {
+  display: flex;
+}
+
+.line1 li {
+  list-style: none;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.line2 {
+  display: flex;
+}
+
+.line2 li {
+  list-style: none;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.districts {
+  display: flex;
+  flex-wrap: wrap;
+}

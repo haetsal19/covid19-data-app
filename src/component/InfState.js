@@ -10,19 +10,22 @@ export default function InfState({ list }) {
     labels: [],
     datasets: [
 
+      //확진자 datasets
       {
         label: '일일 확진자수',
-        yAxisID: "left-axis",
+        yAxisID: 'left-axis',
         borderColor: 'white',
         borderWidth: 0,
         data: [],
         backgroundColor: '#1565c0',
         order: 2
       },
+
+      //사망자 datasets
       {
         type: 'line',
         label: '일일 사망자수',
-        yAxisID: "right-axis",
+        yAxisID: 'right-axis',
         borderColor: '#c62828',
         borderWidth: 2,
         data: [],
@@ -94,8 +97,9 @@ export default function InfState({ list }) {
 
 
 
-  //클릭 시 버튼 비활성화 
   const updateChartPeriod = (period) => {
+
+    //클릭 시 버튼 비활성화 
     if (period === 7) {
       btnShort.current.disabled = true;
       btnLong.current.disabled = false;
@@ -104,8 +108,8 @@ export default function InfState({ list }) {
       btnLong.current.disabled = true;
     }
 
-    setChartData((oldData) => {
-      let newData = { ...oldData } // Object.assign({}, oldData);
+    setChartData((prev) => {
+      let newData = { ...prev } // Object.assign({}, oldData);
       let newLabels = list.labels.slice(-period);
       let newDatas_inf = list.datas_inf.slice(-period);
       let newDatas_death = list.datas_death.slice(-period);
@@ -117,6 +121,7 @@ export default function InfState({ list }) {
     });
 
   }
+
   useEffect(() => {
     updateChartPeriod(7);
   }, [])
@@ -125,17 +130,11 @@ export default function InfState({ list }) {
     console.log(chartData);
   }, [chartData])
 
-  // const [disable, setDisable] = useState({
-  //   disable_7d: false,
-  //   disable_30d: false,
-  // });
-
-
 
   return (
-    <div className="period" >
-      <button disabled="" onClick={() => { updateChartPeriod(7); }} ref={btnShort}>최근 7일</button>
-      <button disabled="" onClick={() => { updateChartPeriod(30); }} ref={btnLong}>최근 30일</button>
+    <div className='period' >
+      <button disabled='' onClick={() => { updateChartPeriod(7); }} ref={btnShort}>최근 7일</button>
+      <button disabled='' onClick={() => { updateChartPeriod(30); }} ref={btnLong}>최근 30일</button>
       <div className='chart'>
         <Bar data={chartData} options={options} redraw />
       </div>
