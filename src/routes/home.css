@@ -1,3 +1,11 @@
+.container {
+  display: flex;
+}
+
+.chart_box {
+ width: auto;
+}
+
 .line1 {
   display: flex;
 }
@@ -22,3 +30,4 @@
   display: flex;
   flex-wrap: wrap;
 }
+

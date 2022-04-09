@@ -970,12 +970,13 @@ export default function Home() {
             .catch(console.log);
 
         const newDistricts = {}
+
         districtsList.forEach((value, index) => {
             //1. newDistricts에 gubun(검역, 제주, 경남 등)의 key가 없을경우 값을 오늘에 넣어준다
             //2. key가 있을 경우 차이를 계산해서 증감에 넣어준다
-            let place = newDistricts[value.gubun];
+            let place = newDistricts[value.gubunEn];
             if (place == undefined) {
-                newDistricts[value.gubun] = { today: value.incDec, diff: 0 }
+                newDistricts[value.gubunEn] = { today: value.incDec, diff: 0 }
             } else {
                 place.diff = place.today - value.incDec;
             }
@@ -1001,32 +1002,34 @@ export default function Home() {
         return (<div>Loading...</div>);
     } else {
         return (
-            <>
+            <div className='container'>
                 {/* 확진,사망,접종 테이블 */}
-                <div className='newTable'>
-                    <ul className='line1'>
-                        <li>확진자</li>
-                        <li>사망자</li>
-                        <li>접종완료</li>
-                    </ul>
-                    <ul className='line2'>
-                        <li>
-                            {data.infState.datas_inf[29]}명<br />
-                            {data.infState.totalInf}명
-                        </li>
-                        <li>
-                            {data.infState.datas_death[29]}명<br />
-                            {data.infState.totalDeath}명
-                        </li>
-                        <li>
-                            {Math.round((data.vaccinated / 51628117) * 100)}%<br />
-                            {data.vaccinated}명
-                        </li>
-                    </ul>
+                <div className='chart_box'>
+                    <div className='newTable'>
+                        <ul className='line1'>
+                            <li>확진자</li>
+                            <li>사망자</li>
+                            <li>접종완료</li>
+                        </ul>
+                        <ul className='line2'>
+                            <li>
+                                {data.infState.datas_inf[29]}명<br />
+                                {data.infState.totalInf}명
+                            </li>
+                            <li>
+                                {data.infState.datas_death[29]}명<br />
+                                {data.infState.totalDeath}명
+                            </li>
+                            <li>
+                                {Math.round((data.vaccinated / 51628117) * 100)}%<br />
+                                {data.vaccinated}명
+                            </li>
+                        </ul>
+                    </div>
+                    <InfState list={data.infState} />
                 </div>
-                <InfState list={data.infState} />
-                <Map />
-            </>
+                <Map list={data.districts} />
+            </div>
         )
     }
 }

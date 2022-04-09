@@ -1,0 +1,11 @@
+h1 {
+    background: linear-gradient(to bottom right, #0d47a1, #64b5f6);
+    height: 150px;
+    color: white;
+    font-size: 60px;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}

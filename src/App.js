@@ -1,8 +1,8 @@
 import React from 'react';
-import Map from './routes/map';
 import Home from './routes/home';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navigation from './component/Navigation';
+import './App.css';
 
 function App() {
   return (
@@ -13,7 +13,6 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/map" element={<Map />} />
       </Routes>
     </BrowserRouter>
   );

@@ -5,8 +5,8 @@ import './Navigation.css';
 function Navigation() {
     return (
         <div className="nav">
-            <Link to="/">HOME</Link>
-            <Link to="/map" state={{ fromNavigation: true }}>MAP</Link>
+            {/* <Link to="/">HOME</Link>
+            <Link to="/map" state={{ fromNavigation: true }}>MAP</Link> */}
         </div>
     );
 }
