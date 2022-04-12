@@ -1,21 +1,38 @@
 svg {
-    height: 60vh;
-    width: 60vw;
+  height: 60vh;
+  width: 60vw;
 }
 
 path {
-    fill:#0069c0;
-    stroke: white;
-    opacity: 0.45;
-}
-path:hover{
-    fill: #0069c0;
-    opacity: 1;
+  fill: #0069c0;
+  stroke: white;
+  opacity: 0.45;
 }
 
-.bubu {
-    background-color: white;
-    border: 4px solid #0069c0;
-    border-radius: 10px;
-    text-align: center;
+path:hover,
+.hover {
+  fill: #0069c0;
+  opacity: 1;
+}
+
+.district_container {
+  margin: 0;
+  padding: 0;
+  /* border: 1px solid #0069c0; */
+  border-radius: 15px;
+  background-color: white;
+  opacity: 0.65;
+  list-style: none;
+  list-style-position: inside;
+  width: fit-content;
+}
+
+.district_container :first-child {
+  font-weight: bold;
+}
+
+.district_container li {
+  text-align: center;
+  padding: 0px 10px 0px 10px;
+  font-size: 0.8rem;
 }

@@ -968,22 +968,23 @@ export default function Home() {
                 }
             })
             .catch(console.log);
+        console.log(districtsList);
 
-        const newDistricts = {}
-
+        const districts = {}
         districtsList.forEach((value, index) => {
             //1. newDistricts에 gubun(검역, 제주, 경남 등)의 key가 없을경우 값을 오늘에 넣어준다
             //2. key가 있을 경우 차이를 계산해서 증감에 넣어준다
-            let place = newDistricts[value.gubunEn];
+            let place = districts[value.gubunEn];
             if (place == undefined) {
-                newDistricts[value.gubunEn] = { today: value.incDec, diff: 0 }
+                districts[value.gubunEn] = { today: value.incDec, diff: 0, gubun: value.gubun }
             } else {
                 place.diff = place.today - value.incDec;
             }
+
         })
 
         setData((prev) => {
-            let newData = { ...prev, districts: newDistricts }
+            let newData = { ...prev, districts: districts }
             return newData
         })
     }
@@ -1028,7 +1029,7 @@ export default function Home() {
                     </div>
                     <InfState list={data.infState} />
                 </div>
-                <Map list={data.districts} />
+                <Map districts={data.districts} />
             </div>
         )
     }
