@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import 'chart.js/auto';
 import { Bar } from 'react-chartjs-2';
-import './infState.css';
+import './Chart.css';
 
-export default function InfState({ list }) {
+
+export default function Chart({ list }) {
   const btnShort = useRef(null);
   const btnLong = useRef(null);
   const [chartData, setChartData] = useState({
@@ -17,8 +18,9 @@ export default function InfState({ list }) {
         borderColor: 'white',
         borderWidth: 0,
         data: [],
-        backgroundColor: '#1565c0',
-        order: 2
+        backgroundColor: '#0069c0',
+        order: 2,
+        barThickness: 10
       },
 
       //사망자 datasets
@@ -98,6 +100,7 @@ export default function InfState({ list }) {
 
 
   const updateChartPeriod = (period) => {
+    let barThickness = 20;
 
     //클릭 시 버튼 비활성화 
     if (period === 7) {
@@ -106,6 +109,7 @@ export default function InfState({ list }) {
     } else {
       btnShort.current.disabled = false;
       btnLong.current.disabled = true;
+      barThickness = 6;
     }
 
     setChartData((prev) => {
@@ -116,6 +120,7 @@ export default function InfState({ list }) {
       newData.labels = newLabels;
       newData.datasets[0].data = newDatas_inf;
       newData.datasets[1].data = newDatas_death;
+      newData.datasets[0].barThickness = barThickness;
 
       return newData;
     });
@@ -142,13 +147,5 @@ export default function InfState({ list }) {
   );
 }
 
-// setData((prev) => {
-//   let newData = {...prev, infState: newInfState}
-//   return newData
-// })
-
-//https://sebhastian.com/react-disable-button/
 
 
-//리액트 그래프/차트 라이브러리 모음
-//https://velog.io/@eunjin/React-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EA%B7%B8%EB%9E%98%ED%94%84%EC%B0%A8%ED%8A%B8-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EB%AA%A8%EC%9D%8C

@@ -26,7 +26,6 @@ export default function Map({ districts }) {
     }
 
     const hoverHandler = (id) => {
-        console.log(id);
         setIsHover((prev) => {
             let next = { ...prev }
             next[id] = next[id] == null ? true : !next[id];

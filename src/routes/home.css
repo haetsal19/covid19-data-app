@@ -1,33 +1,70 @@
+body {
+  margin: 0;
+}
+
 .container {
   display: flex;
+  margin: 20px;
+  min-width: 380px;
 }
 
 .chart_box {
- width: 50vw;
+  width: 50vw;
+  height: 100;
+  margin-right: 15px;
 }
 
-.line1 {
+.newTable {
+  border: 1px solid rgb(163, 163, 163);
+  border-radius: 10px;
   display: flex;
+  justify-content: space-evenly;
 }
 
-.line1 li {
+.newTable ul {
+  padding: 0;
+  width: 95px;
+}
+
+.newTable ul li {
   list-style: none;
-  padding: 0 20px;
   text-align: center;
 }
 
-.line2 {
-  display: flex;
+.newTable ul li:first-child {
+  font-weight: bold;
 }
 
-.line2 li {
-  list-style: none;
-  padding: 0 20px;
-  text-align: center;
+.newTable ul .up {
+  color: #c62828;
 }
 
-.districts {
-  display: flex;
-  flex-wrap: wrap;
+.newChart {
+  margin-top: 20px;
 }
 
+.newMap {
+  border: 1px solid rgb(163, 163, 163);
+  border-radius: 10px;
+  width: 50%;
+  max-height: 81.5vh;
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .chart_box {
+    height: auto;
+    width: 100%;
+    margin: 0 0 20px 0;
+  }
+
+  .newMap {
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import InfState from '../component/InfState';
+import Chart from '../component/Chart';
 import Map from '../component/Map'
 
 import './home.css';
@@ -1007,29 +1007,29 @@ export default function Home() {
                 {/* 확진,사망,접종 테이블 */}
                 <div className='chart_box'>
                     <div className='newTable'>
-                        <ul className='line1'>
+                        <ul>
                             <li>확진자</li>
-                            <li>사망자</li>
-                            <li>접종완료</li>
+                            <li className='up'>▲{data.infState.datas_inf[29].toLocaleString()}명</li>
+                            <li>{data.infState.totalInf.toLocaleString()}명</li>
                         </ul>
-                        <ul className='line2'>
-                            <li>
-                                {data.infState.datas_inf[29]}명<br />
-                                {data.infState.totalInf}명
-                            </li>
-                            <li>
-                                {data.infState.datas_death[29]}명<br />
-                                {data.infState.totalDeath}명
-                            </li>
-                            <li>
-                                {Math.round((data.vaccinated / 51628117) * 100)}%<br />
-                                {data.vaccinated}명
-                            </li>
+                        <ul>
+                            <li>사망자</li>
+                            <li className='up'>▲{data.infState.datas_death[29].toLocaleString()}명</li>
+                            <li>{data.infState.totalDeath.toLocaleString()}명</li>
+                        </ul>
+                        <ul>
+                            <li>접종완료</li>
+                            <li>{Math.round((data.vaccinated / 51628117) * 100)}%</li>
+                            <li>{data.vaccinated.toLocaleString()}명</li>
                         </ul>
                     </div>
-                    <InfState list={data.infState} />
+                    <div className="newChart">
+                        <Chart list={data.infState} />
+                    </div>
                 </div>
-                <Map districts={data.districts} />
+                <div className='newMap'>
+                    <Map districts={data.districts} />
+                </div>
             </div>
         )
     }
