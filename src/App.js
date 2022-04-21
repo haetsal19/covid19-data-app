@@ -3,8 +3,6 @@ import Home from './routes/home';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navigation from './component/Navigation';
 import './App.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 function App() {
   return (
@@ -21,11 +19,7 @@ function App() {
           <li><a>코로나19검사&amp;재택치료&amp;치료제</a></li>
         </ul>
       </nav>
-      <div className="toggleBtn">
-        <FontAwesomeIcon icon={solid('fa-bars')} />
-      </div>
       <Navigation />
-
       <Routes>
         <Route path="/" element={<Home />} />
       </Routes>
