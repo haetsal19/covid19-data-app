@@ -68,3 +68,22 @@ body {
     justify-content: center;
   }
 }
+
+@media screen and (max-width: 420px) {
+  .container {
+    margin: 0;
+  }
+  .newTable,
+  .newMap {
+    border-style: none;
+    border-radius: 0;
+  }
+
+  .newTable {
+    border-bottom: 1px solid rgb(163, 163, 163);
+  }
+
+  .newMap {
+    border-top: 1px solid rgb(163, 163, 163);
+  }
+}
