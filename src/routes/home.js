@@ -892,13 +892,8 @@ export default function Home() {
             'cond[sido::EQ]': '전국',
         }
 
-        const vaccinated = await axios.get(`${urlVaccinated}?${new URLSearchParams(params).toString()}`)
-            .then((result) => {
-                console.log(result);
-                return result.data.data[result.data.data.length - 1].totalFirstCnt;
-            })
-            .catch(console.log);
-
+        const response = await axios.get(`${urlVaccinated}?${new URLSearchParams(params).toString()}`);
+        const vaccinated = response.data.data[response.data.data.length - 1].totalFirstCnt;
         setData((prev) => {
             let newData = { ...prev, vaccinated: vaccinated }
             return newData
@@ -907,22 +902,18 @@ export default function Home() {
 
     //전국 확진자, 사망자 현황
     const getInfState = async () => {
-        const params = {
+        let infStateList = infStateDummy;
+        let params = {
             ServiceKey: key,
             startCreateDt: moment().subtract(31, 'd').format("YYYYMMDD"), //검색할 생성일 범위의 시작
             endCreateDt: moment().subtract(1, 'd').format("YYYYMMDD"), //검색할 생성일 범위의 종료
         }
 
-        const infStateList = await axios.get(`${urlInfState}?${new URLSearchParams(params).toString()}`)
-            .then((result) => {
-                console.log(result.data.response.header.resultMsg);
-                if (result.data.response.header.resultCode == "00") {
-                    return result.data.response.body.items.item.reverse();
-                } else {
-                    return infStateDummy;
-                }
-            })
-            .catch(console.log);
+        const response = await axios.get(`${urlInfState}?${new URLSearchParams(params).toString()}`);
+        if (response.data.response.header.resultCode == "00") {
+            console.log(response);
+            infStateList = response.data.response.body.items.item.reverse();
+        }
 
         const newInfState = {
             labels: [],
@@ -946,32 +937,24 @@ export default function Home() {
             let newData = { ...prev, infState: newInfState }
             return newData
         })
-
-        setIsLoading(false);
     }
 
     //지역별 확진자,사망자 현황 
     const getDistricts = async () => {
+        let districtsList = districtsDummy;
         let params = {
             ServiceKey: key,
             startCreateDt: moment().subtract(2, 'd').format("YYYYMMDD"), //검색할 생성일 범위의 시작
             endCreateDt: moment().subtract(1, 'd').format("YYYYMMDD"), //검색할 생성일 범위의 종료
         }
 
-        const districtsList = await axios.get(`${urlDistricts}?${new URLSearchParams(params).toString()}`)
-            .then((result) => {
-                console.log(result.data.response.header.resultMsg);
-                if (result.data.response.header.resultCode === "00") {
-                    return result.data.response.body.items.item
-                } else {
-                    return districtsDummy;
-                }
-            })
-            .catch(console.log);
-        console.log(districtsList);
+        const response = await axios.get(`${urlDistricts}?${new URLSearchParams(params).toString()}`);
+        if (response.data.response.header.resultCode === "00") {
+            districtsList = response.data.response.body.items.item;
+        }
 
         const districts = {}
-        districtsList.forEach((value, index) => {
+        districtsList.forEach((value) => {
             //1. newDistricts에 gubun(검역, 제주, 경남 등)의 key가 없을경우 값을 오늘에 넣어준다
             //2. key가 있을 경우 차이를 계산해서 증감에 넣어준다
             let place = districts[value.gubunEn];
@@ -980,7 +963,6 @@ export default function Home() {
             } else {
                 place.diff = place.today - value.incDec;
             }
-
         })
 
         setData((prev) => {
@@ -996,7 +978,7 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
-        console.log(data)
+        if (Object.keys(data.districts).length > 0 && Object.keys(data.infState).length > 0 && data.vaccinated > 0) setIsLoading(false);
     }, [data])
 
     if (isLoading) {

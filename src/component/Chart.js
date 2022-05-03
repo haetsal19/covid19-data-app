@@ -10,7 +10,6 @@ export default function Chart({ list }) {
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
-
       //확진자 datasets
       {
         label: '일일 확진자수',
@@ -22,7 +21,6 @@ export default function Chart({ list }) {
         order: 2,
         barThickness: 10
       },
-
       //사망자 datasets
       {
         type: 'line',
@@ -34,7 +32,6 @@ export default function Chart({ list }) {
         backgroundColor: '#c62828',
         order: 1
       },
-
     ]
   });
 
@@ -60,9 +57,6 @@ export default function Chart({ list }) {
         align: 'end'
       }
     },
-
-
-
     scales: {
       'left-axis': {
         display: true,
@@ -90,14 +84,6 @@ export default function Chart({ list }) {
       }
     }
   }
-
-
-  // legend: {
-  //   display: true,
-  //   reverse: true,
-  // }
-
-
 
   const updateChartPeriod = (period) => {
     let barThickness = 20;
