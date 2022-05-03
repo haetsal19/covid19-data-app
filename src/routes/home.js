@@ -877,7 +877,7 @@ export default function Home() {
     const [data, setData] = useState({
         infState: {},
         vaccinated: 0,
-        districts: [],
+        districts: {},
     });
 
     const [isLoading, setIsLoading] = useState(true);
